@@ -80,6 +80,13 @@ Log("My Mod", "Hello, world!", true);
   Type: boolean
   Usage: Specifies rather to copy the output of the external console to a file (UML/log)
  
+ ## Autoload
+  UML allows for a mod to be auto loaded if it is made to target a specific game, adding different features.
+  The mod is created like any other mod, and treated like any other mod, except it has to be placed as UML/autoload.dll
+  UML will only attempt to load this mod if it is present as UML/autoload.dll
+  Recommended GUID is `autoload`. Author and Version are recommended empty.
+  
+ 
  # Creating a mod
  How to create a mod (really basic):
 ```cs
