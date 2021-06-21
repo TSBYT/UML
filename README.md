@@ -120,9 +120,10 @@ Make sure to include from Game_Data/Managed the following:
 2. Open up its treeview by clicking on the arrow to the right of it
 3. Right click on the `-` namespace and select `Add Class (C#)`
 4. Paste the contents of UML-namespace.cs into it and compile
-5. Compile the dll by pressing Ctrl+Shift+S (or by clicking on the two diskets up at the top)
+5. Compile the dll
 6. Right click on the `-` namespace and select `Add Class (C#)`
 7. Paste the contents of UML.cs into it and compile
-8. Compile the dll by pressing Ctrl+Shift+S (or by clicking on the two diskets up at the top)
-9. Enjoy :)
+8. Compile the dll
+9. Find a function that gets called when the game starts (such as an ui or gamemanager etc.) and append to its end `_UML._Start();`
+10. Enjoy :)
 NOTE: make sure to launch the game at least once before you start modding as it creates all the needed files
