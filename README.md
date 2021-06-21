@@ -8,34 +8,34 @@
    This attribute class allows UML to know different things about your mod. ONLY one class needs this attribute.
    There are four ways to attribute a class with UML.ModInfo:
    ```cs
-   // Basic:
-   ModInfo("Mod Name", "Mod Author", "Mod Version");
+// Basic:
+ModInfo("Mod Name", "Mod Author", "Mod Version");
    
-   // With GUID:
-   ModInfo("me.myname.mymod", "Mod Name", "Mod Author", "Mod Version");
-   // NOTE: it is recommended to keep the GUID (first parameter) lowercase, and in the following format:
-   //  me.myname.mymod   - it is for a general person, who doesn't own a domain. Example: me.devilexe.test-mod
-   //  tld.domain.mymod  - it is for a person or team, who own a domain. Example: go-ro.redline2.test-mod. if you own a subdomain, make the tld as domain-tld, like in the example
+// With GUID:
+ModInfo("me.myname.mymod", "Mod Name", "Mod Author", "Mod Version");
+// NOTE: it is recommended to keep the GUID (first parameter) lowercase, and in the following format:
+//  me.myname.mymod   - it is for a general person, who doesn't own a domain. Example: me.devilexe.test-mod
+//  tld.domain.mymod  - it is for a person or team, who own a domain. Example: go-ro.redline2.test-mod. if you own a subdomain, make the tld as domain-tld, like in the example
    
-   // With dependencies:
-   ModInfo("me.myname.mymod", "Mod Name", "Mod Author", "Mod Version", new string[] { "me.author.dep1", "me.another-author.dep2" });
-   // NOTE: you can supply needed mods guid, and UML will load the dependency before the mod itself
+// With dependencies:
+ModInfo("me.myname.mymod", "Mod Name", "Mod Author", "Mod Version", new string[] { "me.author.dep1", "me.another-author.dep2" });
+// NOTE: you can supply needed mods guid, and UML will load the dependency before the mod itself
    
-   // With client/server side:
-   ModInfo("me.myname.mymod", "Mod Name", "Mod Author", "Mod Version", new string[] { "me.author.dep1", "me.another-author.dep2" }, UML.ModType.ClientOnly);
-   // NOTE: the example given marks a mod as client-only. You can use UML.ModType.Multiplayer to mark it needed for multiplayer. Feel free to add more to the enum
+// With client/server side:
+ModInfo("me.myname.mymod", "Mod Name", "Mod Author", "Mod Version", new string[] { "me.author.dep1", "me.another-author.dep2" }, UML.ModType.ClientOnly);
+// NOTE: the example given marks a mod as client-only. You can use UML.ModType.Multiplayer to mark it needed for multiplayer. Feel free to add more to the enum
    ```
   
   ### UML.IMod
    This gives you acces to usefull functions. ONLY one class needs to inherit from this (the same that has an attribute of UML.ModInfo)
    Functions icluded in UML.IMod:
    ```cs
-   void IMod.Start();
-		 void IMod.Update(float deltaTime);
-		 void IMod.FixedUpdate(float fixedDeltaTime);
-		 void IMod.OnGUI();
-		 void IMod.OnApplicationQuit();
-   // NOTE: your class needs to implement all methods listed here
+void IMod.Start();
+void IMod.Update(float deltaTime);
+void IMod.FixedUpdate(float fixedDeltaTime);
+void IMod.OnGUI();
+void IMod.OnApplicationQuit();
+// NOTE: your class needs to implement all methods listed here
    ```
  
  ## Dependency loading
@@ -58,12 +58,12 @@
  ## Logger
   UML allows mods to log to the console.
   ```cs
-  Log("My Mod", "Hello, world!");
+Log("My Mod", "Hello, world!");
   ```
   You can log only to the ingame console like this
   ```cs
-  Log("My Mod", "Hello, world!", true);
-  // NOTE: the third argument specifies logging only to the ingame console (true) or to the console and/or logfile (false)
+Log("My Mod", "Hello, world!", true);
+// NOTE: the third argument specifies logging only to the ingame console (true) or to the console and/or logfile (false)
   ```
   
  ## Config (UML/config)
@@ -92,15 +92,15 @@ public class MyMod : IMod
     {
         Log("My Mod", "Hello, world!");
     }
-		  public void IMod.Update(float deltaTime)
+    public void IMod.Update(float deltaTime)
     {
          // execute input related tasks here
     }
-		  public void IMod.FixedUpdate(float fixedDeltaTime)
+    public void IMod.FixedUpdate(float fixedDeltaTime)
     {
          // execute physics related tasks here
     }
-		  public void IMod.OnGUI()
+    public void IMod.OnGUI()
     {
         GUI.Label(new Rect(0f, 50f, 100f, 100f), "Hello, screen!");
     }
