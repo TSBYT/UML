@@ -199,7 +199,7 @@ class _UML
 				center.normal.textColor = Color.white;
 				center.alignment = TextAnchor.UpperCenter;
 				GUI.Box(new Rect(-5f, -5f, Screen.width + 10f, Screen.height + 10f), "");
-				GUI.Label(new Rect(0f, 10f, Screen.width, Screen.height), "<size=25>[UML]</size>", center);
+				GUI.Label(new Rect(0f, 10f, Screen.width, Screen.height), "<size=25>[Universal Mod Loader]</size>", center);
 				GUI.Label(new Rect(5f, 40f, Screen.width - 5f, Screen.height - 60f), LogString);
 				debugCommand = GUI.TextArea(new Rect(0f, Screen.height - 20f, Screen.width, 20f), debugCommand);
 				if (debugCommand.Contains("\n"))
@@ -303,6 +303,7 @@ class _UML
 			{
 				InitializeOutStream();
 				InitializeInStream();
+				SetConsoleTitle("[UML] Universal Mod Loader");
 			}
 		}
 
@@ -347,7 +348,7 @@ class _UML
 			SetLastError = true,
 			CharSet = CharSet.Auto,
 			CallingConvention = CallingConvention.StdCall)]
-		private static extern uint AttachConsole(UInt32 dwProcessId);
+		private static extern uint AttachConsole(uint dwProcessId);
 
 		[DllImport("kernel32.dll",
 			EntryPoint = "CreateFileW",
@@ -363,6 +364,13 @@ class _UML
 			  uint dwFlagsAndAttributes,
 			  IntPtr hTemplateFile
 			);
+
+		[DllImport("kernel32.dll",
+			EntryPoint = "SetConsoleTitle",
+			SetLastError = true,
+			CharSet = CharSet.Auto,
+			CallingConvention = CallingConvention.StdCall)]
+		private static extern bool SetConsoleTitle(string lpConsoleTitle);
 
 		private const uint GENERIC_WRITE = 0x40000000;
 		private const uint GENERIC_READ = 0x80000000;
