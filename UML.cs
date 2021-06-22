@@ -98,8 +98,10 @@ public class _UML
 				Directory.CreateDirectory(modloader);
 			if (!Directory.Exists(modss))
 				Directory.CreateDirectory(modss);
-			if (!Directory.Exists(Path.Combine(modloader, "deps")))
-				Directory.CreateDirectory(Path.Combine(modloader, "deps"));
+			if (!Directory.Exists(depss))
+				Directory.CreateDirectory(depss);
+			if (!Directory.Exists(ress))
+				Directory.CreateDirectory(ress);
 			if (!File.Exists(Path.Combine(modloader, "config")))
 				File.WriteAllText(Path.Combine(modloader, "config"), "console=true\nunitylog=true\nlogfile=true");
 			new Config(File.ReadAllLines(Path.Combine(modloader, "config")));
@@ -108,6 +110,7 @@ public class _UML
 				WinConsole.Initialize(true);
 				Log("UML", "Initialized console");
 			}
+			Log("UML", "Unity Version: " + Application.unityVersion);
 			if (Config.config.unitylog)
 				Application.logMessageReceivedThreaded += delegate (string condition, string stackTrace, LogType type)
 				{
@@ -228,13 +231,20 @@ public class _UML
 				GUI.Box(new Rect(-5f, -5f, Screen.width + 10f, Screen.height + 10f), "");
 				GUI.Label(new Rect(0f, 10f, Screen.width, Screen.height), "<size=25>[Universal Mod Loader]</size>", center);
 				GUI.Label(new Rect(5f, 40f, Screen.width - 5f, Screen.height - 60f), LogString);
+				GUI.SetNextControlName("consoleinput");
 				debugCommand = GUI.TextArea(new Rect(0f, Screen.height - 20f, Screen.width, 20f), debugCommand);
+				GUI.FocusControl("consoleinput");
 				if (debugCommand.Contains("\n"))
 				{
 					debugCommand = debugCommand.Replace("\n", "");
 					HandleCommand(debugCommand);
 					debugCommand = "";
 				}
+				if(debugCommand.Contains("`"))
+                {
+					debugCommand = debugCommand.Replace("`", "");
+					debugGuiOpen = false;
+                }
 			}
 		}
 
@@ -260,7 +270,7 @@ public class _UML
 		private Assembly ResolveAssembly(object sender, ResolveEventArgs args)
 		{
 			Log("UML", $" Resolving: {args.Name}");
-			return Assembly.LoadFrom(Path.Combine(modloader, "deps", args.Name.Split(',')[0] + ".dll"));
+			return Assembly.LoadFrom(Path.Combine(depss, args.Name.Split(',')[0] + ".dll"));
 		}
 
 		private void HandleCommand(string command)
@@ -282,6 +292,8 @@ public class _UML
 		public static readonly string root = Application.dataPath + "/../";
 		public static readonly string modloader = Path.Combine(root, "UML");
 		public static readonly string modss = Path.Combine(modloader, "mods");
+		public static readonly string depss = Path.Combine(modloader, "deps");
+		public static readonly string ress = Path.Combine(modloader, "res");
 		private readonly List<Mod> mods;
 		private float fadeSeconds;
 		private int remainingMods;
@@ -450,4 +462,37 @@ public class _UML
 		public bool unitylog = true;
 		public bool logfile = true;
 	}
+
+	public class ResourceManager
+    {
+		public static Dictionary<string, AssetBundle> assetBundles = new Dictionary<string, AssetBundle>();
+
+		public static void RegisterAssetBundle(string guid)
+        {
+			if (!File.Exists(Path.Combine(HooksMB.ress, guid)))
+				return;
+			AssetBundle bundle = AssetBundle.LoadFromFile(Path.Combine(HooksMB.ress, guid));
+			assetBundles.Add(guid, bundle);
+        }
+
+		public static T Load<T>(string name) where T : UnityEngine.Object
+        {
+			// get calling guid
+			Mod caller = (from x in HooksMB.GetMods()
+						  where x.asm.GetName().FullName == Assembly.GetCallingAssembly().GetName().FullName
+						  select x).First();
+			if (caller == null)
+            {
+				Log("UML", "[ERR] ResourceManager.Load(): Could not find calling assembly as a loaded mod");
+				return null;
+			}
+			if(!assetBundles.ContainsKey(caller.guid))
+            {
+				Log("UML", "[ERR] ResourceManager.Load(): Could not find the asset bundle (not existing / not loaded)");
+				return null;
+            }
+
+			return assetBundles[caller.guid].LoadAsset<T>(name);
+        }
+    }
 }
