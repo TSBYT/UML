@@ -9,11 +9,11 @@ using Microsoft.Win32.SafeHandles;
 using UML;
 using UnityEngine;
 
-class _UML
+public class _UML
 {
 	private static void PreloadMod(string path, List<Mod> mods)
     {
-		Log("UML", "Loading file " + Path.GetFileName(path));
+		Log("UML", $"Loading file {Path.GetFileName(path)}");
 		Assembly assembly = Assembly.LoadFrom(path);
 		Mod mod3 = null;
 		int num = 0;
@@ -66,7 +66,7 @@ class _UML
 			LogString = LogString.Substring(LogString.IndexOf('\n') + 1);
 		if (onlyInGame)
 			return;
-		Console.WriteLine("[" + app + "] " + message);
+		Console.WriteLine($"[{app}] {message}");
 		if (Config.config.logfile)
 			File.AppendAllText(Path.Combine(HooksMB.modloader, "log"), $"[{app}] {message}\n");
 	}
@@ -139,7 +139,7 @@ class _UML
                     {
 						Log("UML", $" Missing deps in mod {mod.name}:");
 						foreach (var dep in mod.dependecies)
-							Log("UML", $"  " + dep);
+							Log("UML", $"  {dep}");
                     }
 					break;
                 }
@@ -232,14 +232,14 @@ class _UML
 
 		private Assembly ResolveAssembly(object sender, ResolveEventArgs args)
 		{
-			Log("UML", " Resolving: " + args.Name);
+			Log("UML", $" Resolving: {args.Name}");
 			return Assembly.LoadFrom(Path.Combine(modloader, "deps", args.Name.Split(',')[0] + ".dll"));
 		}
 
 		private void HandleCommand(string command)
 		{
 			string[] args = command.Split(' ');
-			Log("UML", "Command: " + command, true);
+			Log("UML", $"Command: {command}", true);
 		}
 
 		public static HooksMB instance;
@@ -273,7 +273,7 @@ class _UML
 			author = _author;
 			version = _version;
 			guid = _guid;
-			dependecies = _dependencies.ToList<string>();
+			dependecies = _dependencies.ToList();
 			modType = _modType;
 			sha256 = _sha256;
 		}
@@ -402,7 +402,7 @@ class _UML
 						logfile = (value == "true");
 						break;
 					default:
-						Log("Config", "[ERR] Unknown label: " + label);
+						Log("Config", $"[ERR] Unknown label: {label}");
 						break;
                 }
 			}
