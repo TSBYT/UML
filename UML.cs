@@ -101,12 +101,12 @@ public class _UML
 				File.WriteAllText(Path.Combine(modloader, "log"), "");
 			AppDomain.CurrentDomain.AssemblyResolve += ResolveAssembly;
 			Log("UML", "Preloading mods..");
+			if (File.Exists(Path.Combine(modloader, "autoload.dll")))
+				PreloadMod(Path.Combine(modloader, "autoload.dll"), mods);
 			foreach (string file in from x in Directory.GetFiles(modss)
 									where x.EndsWith(".dll")
 									select x)
 				PreloadMod(file, mods);
-			if (File.Exists(Path.Combine(modloader, "autoload.dll")))
-				PreloadMod(Path.Combine(modloader, "autoload.dll"), mods);
 			Log("UML", "Loading mods..");
 			int lastRemMods = 0;
 			remainingMods = mods.Count;
@@ -130,7 +130,7 @@ public class _UML
 						remainingMods--;
 					}
 				}
-				if(lastRemMods == remainingMods)
+				if(lastRemMods == remainingMods && remainingMods > 0)
                 {
 					Log("UML", "Some mods could not be loaded, because they are missing a dependency:");
 					foreach(var mod in from x in mods
