@@ -68,9 +68,9 @@ _UML.RegisterCommand(new _UML.Command("label", args => {});
   Make sure to name your AssetBundle the same as your mods guid.
   To load an assets, use:
   ```cs
-_UML.ResourceManager.Load<T>("name");
+_UML.ResourceManager.Load<T>("me.myname.mymod", "name");
   ```
-  Where T is the type of the asset you want to load (eg: `GameObject`, `Texture2D`) and name is the name of the asset in Unity Editor.
+  Where T is the type of the asset you want to load (eg: `GameObject`, `Texture2D`) and name is the name of the asset in Unity Editor
 
  
  ## Logger
