@@ -93,27 +93,27 @@ Log("My Mod", "Hello, world!", true);
 using UML;
 using UnityEngine;
 [ModInfo("My Mod", "devilExE", "0.0.0")
-public class MyMod : IMod
+class MyMod : IMod
 {
-    public void IMod.Start()
+    void IMod.Start()
     {
-        Log("My Mod", "Hello, world!");
+        _UML.Log("My Mod", "Hello, world!");
     }
-    public void IMod.Update(float deltaTime)
+    void IMod.Update(float deltaTime)
     {
          // execute input related tasks here
     }
-    public void IMod.FixedUpdate(float fixedDeltaTime)
+    void IMod.FixedUpdate(float fixedDeltaTime)
     {
          // execute physics related tasks here
     }
-    public void IMod.OnGUI()
+    void IMod.OnGUI()
     {
         GUI.Label(new Rect(0f, 50f, 100f, 100f), "Hello, screen!");
     }
-    public void IMod.OnApplicationQuit()
+    void IMod.OnApplicationQuit()
     {
-        Log("My Mod", "Goodbye, world!");
+        _UML.Log("My Mod", "Goodbye, world!");
     }
 }
 ```
