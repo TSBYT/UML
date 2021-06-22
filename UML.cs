@@ -28,6 +28,7 @@ public class _UML
 				{
 					mod3 = new Mod(assembly, type2, customAttribute.name, customAttribute.author, customAttribute.version, customAttribute.guid, customAttribute.dependencies, customAttribute.modType, SHA256CheckSum(path));
 					mods.Add(mod3);
+					ResourceManager.RegisterAssetBundle(customAttribute.guid);
 				}
 			}
 		}
@@ -110,7 +111,6 @@ public class _UML
 				WinConsole.Initialize(true);
 				Log("UML", "Initialized console");
 			}
-			Log("UML", "Unity Version: " + Application.unityVersion);
 			if (Config.config.unitylog)
 				Application.logMessageReceivedThreaded += delegate (string condition, string stackTrace, LogType type)
 				{
@@ -118,6 +118,7 @@ public class _UML
 				};
 			if (Config.config.logfile)
 				File.WriteAllText(Path.Combine(modloader, "log"), "");
+			Log("UML", "Unity Version: " + Application.unityVersion);
 			AppDomain.CurrentDomain.AssemblyResolve += ResolveAssembly;
 			Log("UML", "Preloading mods..");
 			if (File.Exists(Path.Combine(modloader, "autoload.dll")))
@@ -475,24 +476,16 @@ public class _UML
 			assetBundles.Add(guid, bundle);
         }
 
-		public static T Load<T>(string name) where T : UnityEngine.Object
+		public static T Load<T>(string guid, string name) where T : UnityEngine.Object
         {
 			// get calling guid
-			Mod caller = (from x in HooksMB.GetMods()
-						  where x.asm.GetName().FullName == Assembly.GetCallingAssembly().GetName().FullName
-						  select x).First();
-			if (caller == null)
-            {
-				Log("UML", "[ERR] ResourceManager.Load(): Could not find calling assembly as a loaded mod");
-				return null;
-			}
-			if(!assetBundles.ContainsKey(caller.guid))
+			if(!assetBundles.ContainsKey(guid))
             {
 				Log("UML", "[ERR] ResourceManager.Load(): Could not find the asset bundle (not existing / not loaded)");
 				return null;
             }
 
-			return assetBundles[caller.guid].LoadAsset<T>(name);
+			return assetBundles[guid].LoadAsset<T>(name);
         }
     }
 }
