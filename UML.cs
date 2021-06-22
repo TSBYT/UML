@@ -266,7 +266,16 @@ public class _UML
 		private void HandleCommand(string command)
 		{
 			string[] args = command.Split(' ');
-			Log("UML", $"Command: {command}", true);
+			Log("UML", $"Executing: {command}", true);
+			ConsoleCommand cmd = (from x in commands
+								  where x.label == args[0]
+								  select x).First();
+			if(cmd == null)
+            {
+				Log("UML", $"Unknown command: {command}");
+				return;
+            }
+			cmd.run(args);
 		}
 
 		public static HooksMB instance;
