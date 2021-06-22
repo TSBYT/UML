@@ -15,7 +15,7 @@ ModInfo("Mod Name", "Mod Author", "Mod Version");
 ModInfo("me.myname.mymod", "Mod Name", "Mod Author", "Mod Version");
 // NOTE: it is recommended to keep the GUID (first parameter) lowercase, and in the following format:
 //  me.myname.mymod   - it is for a general person, who doesn't own a domain. Example: me.devilexe.test-mod
-//  tld.domain.mymod  - it is for a person or team, who own a domain. Example: go-ro.redline2.test-mod. if you own a subdomain, make the tld as domain-tld, like in the example
+//  tld.domain.mymod  - it is for a person or team, who owns a domain. Example: go-ro.redline2.test-mod. if you own a subdomain, make the tld as domain-tld, like in the example (redline2.go.ro -> go-ro.redline2)
    
 // With dependencies:
 ModInfo("me.myname.mymod", "Mod Name", "Mod Author", "Mod Version", new string[] { "me.author.dep1", "me.another-author.dep2" });
@@ -40,7 +40,7 @@ void IMod.OnApplicationQuit();
  
  ## Dependency loading
   UML allows for dependency loading.
-  Basically, a needed dependency will load before loading the mod that is dependent on it. It also applies to dependencies itself.
+  Basically, a needed dependency will load before loading the mod that is dependent on it. It also applies to dependencies themself.
   UML will load all the mods with no dependencies, and then remove the loaded mod guid from all unloaded mods dependency list, and then it will repeat the process.
   If no more mods load after one such process, UML will stop loading mods, and print missing dependencies to the console.
  
@@ -49,9 +49,9 @@ void IMod.OnApplicationQuit();
   It will resolve all needed dependencies by taking their base name (for example 0Harmony), adding a .dll to its end (0Harmony.dll) and loading it from UML/deps
  
  ## Ingame console
-  UML gives you a debug console that shows all the logs and allows for executing commands.
+  UML gives you a debug console that shows all the logs and allows for executing commands. It can be toggled by pressing \`
  
- ## Custom commands
+ ## Custom console commands
   TBA (To Be Added).
   Currently you can only add commands to the UML itself.
  
@@ -81,7 +81,7 @@ Log("My Mod", "Hello, world!", true);
   Usage: Specifies rather to copy the output of the external console to a file (UML/log)
  
  ## Autoload
-  UML allows for a mod to be auto loaded if it is made to target a specific game, adding different features.
+  UML allows for a mod to be auto loaded if UML is shipped for a game as a package. Thus the autoload mod is not present in UML/mods/
   The mod is created like any other mod, and treated like any other mod, except it has to be placed as UML/autoload.dll
   UML will only attempt to load this mod if it is present as UML/autoload.dll
   Recommended GUID is `autoload`. Author and Version are recommended empty.
@@ -117,13 +117,13 @@ public class MyMod : IMod
     }
 }
 ```
-Make sure to include from Game_Data/Managed the following:
+Make sure to include from Game_Data/Managed/ the following:
 - Assembly-CSharp.dll
 - System.\*.dll (except System.Core.dll)
 - UnityEngine.\*.dll
 
 # Importing UML into a game
-1. Open Assembly-CSharp.dll (located at Game_Data/Managed) in DNSpy (or something similar)
+1. Open Assembly-CSharp.dll (located at Game_Data/Managed/) in DNSpy (or something similar)
 2. Open up its treeview by clicking on the arrow to the right of it
 3. Right click on the `-` namespace and select `Add Class (C#)`
 4. Paste the contents of UML-namespace.cs into it and compile
