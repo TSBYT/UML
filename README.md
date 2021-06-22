@@ -61,7 +61,7 @@ _UML.RegisterCommand(new _UML.Command("label", args => {});
  ## AssetBundles
   UML allows you to load any assetbundle and load files from it.
   To make an asset bundle, open Unity (same version as your game, seen in the console).
-  Import exportBundle.cs as a script in your Assets.
+  Import exportBundle.cs as a script in a new folder called `Editor` in Assets.
   Load all the files you want to export.
   From the explorer add them to a new asset bundle (at the bottom of the explorer).
   Go to the top menu, Assets > Build AssetBundles.
