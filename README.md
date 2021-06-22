@@ -52,13 +52,31 @@ void IMod.OnApplicationQuit();
   UML gives you a debug console that shows all the logs and allows for executing commands. It can be toggled by pressing \`
  
  ## Custom console commands
-  TBA (To Be Added).
-  Currently you can only add commands to the UML itself.
+  To register a command use:
+  ```cs
+_UML.RegisterCommand(new _UML.Command("label", args => {});
+  ```
+  A command is registered as `label` and when it's ran the lamba function is called with all the args separated by spaces (including the command itself)
+ 
+ ## AssetBundles
+  UML allows you to load any assetbundle and load files from it.
+  To make an asset bundle, open Unity (same version as your game, seen in the console).
+  Import exportBundle.cs as a script in a new folder called `Editor` in Assets.
+  Load all the files you want to export.
+  From the explorer add them to a new asset bundle (at the bottom of the explorer).
+  Go to the top menu, Assets > Build AssetBundles.
+  Make sure to name your AssetBundle the same as your mods guid.
+  To load an assets, use:
+  ```cs
+_UML.ResourceManager.Load<T>("name");
+  ```
+  Where T is the type of the asset you want to load (eg: `GameObject`, `Texture2D`) and name is the name of the asset in Unity Editor.
+
  
  ## Logger
   UML allows mods to log to the console.
   ```cs
-Log("My Mod", "Hello, world!");
+_UML.Log("My Mod", "Hello, world!");
   ```
   You can log only to the ingame console like this
   ```cs
@@ -85,6 +103,8 @@ Log("My Mod", "Hello, world!", true);
   The mod is created like any other mod, and treated like any other mod, except it has to be placed as UML/autoload.dll
   UML will only attempt to load this mod if it is present as UML/autoload.dll
   Recommended GUID is `autoload`. Author and Version are recommended empty.
+ 
+ 
   
  
  # Creating a mod
