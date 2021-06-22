@@ -71,6 +71,22 @@ public class _UML
 			File.AppendAllText(Path.Combine(HooksMB.modloader, "log"), $"[{app}] {message}\n");
 	}
 
+	public class ConsoleCommand
+    {
+		public ConsoleCommand(string _label, Action<string[]> _run)
+        {
+			label = _label;
+			run = _run;
+        }
+		public readonly string label;
+		public readonly Action<string[]> run;
+    }
+	private static List<ConsoleCommand> commands = new List<ConsoleCommand>();
+	public static void RegisterCommand(ConsoleCommand cmd)
+    {
+		commands.Add(cmd);
+    }
+
 	public static string LogString { get; private set; }
 
 	public class HooksMB : MonoBehaviour
@@ -146,6 +162,17 @@ public class _UML
 				lastRemMods = remainingMods;
 			}
 			Log("UML", "Loaded all mods");
+			RegisterCommand(new ConsoleCommand("help", args =>
+			{
+				string output = "Available commands: ";
+				foreach(var cmd in commands)
+                {
+					if (cmd.label == "help")
+						continue;
+					output += $"{cmd.label}, ";
+                }
+				Log("UML", output, true);
+			}));
 		}
 
 		private void Update()
